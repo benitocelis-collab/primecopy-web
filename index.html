@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es-AR">
+<html lang="es-419">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,14 +7,14 @@
 <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#101B23" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="es_AR">
+<meta property="og:locale" content="es_LA">
 <meta property="og:title" content="Prime Copy · Trade copier para NinjaTrader 8">
-<meta property="og:description" content="Operá en una cuenta. Las demás te siguen. Copiador para cuentas Tradovate y de prop firms, con multiplicador, límites de riesgo y control por cuenta.">
+<meta property="og:description" content="Opera en una cuenta. Las demás te siguen. Copiador para cuentas Tradovate y de prop firms, con multiplicador, límites de riesgo y control por cuenta.">
 <meta property="og:url" content="https://primecopy.netlify.app/">
 <meta property="og:image" content="https://primecopy.netlify.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Prime Copy: Operá en una cuenta. Las demás te siguen. Panel del copiador con la cuenta Master y dos Slaves copiando, en modo privado.">
+<meta property="og:image:alt" content="Prime Copy: Opera en una cuenta. Las demás te siguen. Panel del copiador con la cuenta Master y dos Slaves copiando, en modo privado.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://primecopy.netlify.app/og-image.png">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect x='2' y='2' width='15' height='15' rx='2' fill='%23D9531E'/%3E%3Crect x='11' y='11' width='15' height='15' rx='2' fill='none' stroke='%2316232D' stroke-width='2.4'/%3E%3C/svg%3E">
@@ -327,7 +327,7 @@ footer p{max-width:90ch}
   <section class="hero" id="inicio">
     <div class="wrap">
       <div class="hero-copy">
-        <h1><span>Operá en una cuenta.</span> <span class="second">Las demás te siguen.</span></h1>
+        <h1><span>Opera en una cuenta.</span> <span class="second">Las demás te siguen.</span></h1>
         <p class="lede">Prime Copy es un copiador de operaciones para NinjaTrader 8. Replica tu cuenta Master en todas tus cuentas Tradovate y de prop firms, con multiplicador, límites de riesgo y control por cuenta, desde un solo panel.</p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://t.me/mrbenitofx" target="_blank" rel="noopener">
@@ -394,9 +394,9 @@ footer p{max-width:90ch}
         <p class="prose">En cada ejecución real del Master, Prime Copy calcula qué posición le corresponde a cada Slave y envía <strong>solo la diferencia</strong> con lo que esa cuenta ya tiene o tiene en camino. Las órdenes salen a mercado.</p>
         <ul class="bullets">
           <li><strong>El redondeo no se acumula.</strong> Con multiplicadores como x0.5, cada fill se recalcula desde la posición objetivo.</li>
-          <li><strong>Una salida nunca te da vuelta.</strong> Si una Slave no tenía la entrada, la salida del Master no le abre una posición al revés.</li>
+          <li><strong>Una salida nunca invierte tu posición.</strong> Si una Slave no tenía la entrada, la salida del Master no le abre una posición al revés.</li>
           <li><strong>Si una orden se rechaza</strong> (margen, rechazo del broker), no frena al resto de las cuentas y se reintenta con la próxima ejecución del Master.</li>
-          <li><strong>Nunca copia operaciones anteriores</strong> al momento en que tocás Iniciar.</li>
+          <li><strong>Nunca copia operaciones anteriores</strong> al momento en que presionas Iniciar.</li>
         </ul>
       </div>
       <div>
@@ -428,7 +428,7 @@ footer p{max-width:90ch}
       <div>
         <div class="sec-head">
           <h2>Cada cuenta con su propio tamaño</h2>
-          <p class="prose">No todas tus cuentas tienen el mismo balance ni las mismas reglas. Ajustá cuánto copia cada una sin tocar las demás.</p>
+          <p class="prose">No todas tus cuentas tienen el mismo balance ni las mismas reglas. Ajusta cuánto copia cada una sin tocar las demás.</p>
         </div>
         <div class="feature-list">
           <div>
@@ -441,13 +441,13 @@ footer p{max-width:90ch}
           </div>
           <div>
             <h3>Pausar y reanudar</h3>
-            <p>Sacá una Slave del copiado sin detener al resto. Si tiene posición, elegís dejarla abierta o cerrarla. Al reanudar vuelve en la próxima entrada del Master, nunca a mitad de un trade.</p>
+            <p>Saca una Slave del copiado sin detener al resto. Si tiene posición, eliges dejarla abierta o cerrarla. Al reanudar vuelve en la próxima entrada del Master, nunca a mitad de un trade.</p>
           </div>
         </div>
       </div>
 
       <div class="sim" aria-labelledby="sim-title">
-        <h3 id="sim-title">Probalo con una cuenta</h3>
+        <h3 id="sim-title">Pruébalo con una cuenta</h3>
         <div class="sim-row">
           <span><strong>Posición del Master</strong><span class="hint">Micros MNQ</span></span>
           <div class="seg" role="group" aria-label="Posición del Master">
@@ -457,7 +457,7 @@ footer p{max-width:90ch}
           </div>
         </div>
         <div class="sim-row">
-          <label for="mult-out">Multiplicador<span class="hint">De a 0.5, hasta x10</span></label>
+          <label for="mult-out">Multiplicador<span class="hint">En pasos de 0.5, hasta x10</span></label>
           <div class="stepper">
             <button type="button" id="mult-dn" aria-label="Bajar multiplicador">▼</button>
             <output id="mult-out" aria-live="polite">x3</output>
@@ -486,7 +486,7 @@ footer p{max-width:90ch}
       <div>
         <div class="sec-head">
           <h2>Las reglas de tu prop firm, siempre a la vista</h2>
-          <p class="prose">Cargás los límites de cada cuenta una vez y el panel te muestra cuánto margen te queda antes de romper una regla. El seguimiento corre desde que abrís NinjaTrader, aunque no abras la ventana.</p>
+          <p class="prose">Ingresas los límites de cada cuenta una vez y el panel te muestra cuánto margen te queda antes de romper una regla. El seguimiento corre desde que abres NinjaTrader, aunque no abras la ventana.</p>
         </div>
         <ul class="bullets">
           <li><strong>Límite de pérdida diaria</strong> con la distancia al límite en verde, naranja o rojo.</li>
@@ -500,9 +500,9 @@ footer p{max-width:90ch}
         <div class="dialog">
           <div class="win-title"><b>Riesgo</b> <span class="js-acct" data-id="TDFYSL50331207">TDFYSL50331207</span></div>
           <div class="dialog-body">
-            <div class="field"><span>Límite de pérdida diaria</span><span>$2.000</span></div>
-            <div class="field"><span>Drawdown máximo<small>EOD trailing</small></span><span>$3.000</span></div>
-            <div class="field"><span>Meta de ganancia diaria<small>Cierra y pausa al llegar · 0 = sin meta</small></span><span>$1.500</span></div>
+            <div class="field"><span>Límite de pérdida diaria</span><span>$2,000</span></div>
+            <div class="field"><span>Drawdown máximo<small>EOD trailing</small></span><span>$3,000</span></div>
+            <div class="field"><span>Meta de ganancia diaria<small>Cierra y pausa al llegar · 0 = sin meta</small></span><span>$1,500</span></div>
             <div class="field"><span>Máximo de contratos<small>Por instrumento · 0 = sin límite</small></span><span>6</span></div>
           </div>
         </div>
@@ -510,13 +510,13 @@ footer p{max-width:90ch}
           <table>
             <thead><tr><th scope="col">Cuenta</th><th scope="col" class="r">Dist. diario</th><th scope="col" class="r">Dist. max DD</th><th scope="col">Estado</th></tr></thead>
             <tbody>
-              <tr><td class="js-acct" data-id="TDFYSL50218815">TDFYSL50218815</td><td class="r up">$1.259</td><td class="r up">$2.410</td><td>Copiando</td></tr>
-              <tr><td class="js-acct" data-id="TDFYSL50447562">TDFYSL50447562</td><td class="r warn">$397</td><td class="r warn">$1.120</td><td>Copiando</td></tr>
+              <tr><td class="js-acct" data-id="TDFYSL50218815">TDFYSL50218815</td><td class="r up">$1,259</td><td class="r up">$2,410</td><td>Copiando</td></tr>
+              <tr><td class="js-acct" data-id="TDFYSL50447562">TDFYSL50447562</td><td class="r warn">$397</td><td class="r warn">$1,120</td><td>Copiando</td></tr>
               <tr><td class="js-acct" data-id="TDFYSL50662140">TDFYSL50662140</td><td class="r down">$140</td><td class="r warn">$690</td><td><span class="desync">⚠ Esperado Long 2, real Long 1</span></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="caption">Datos de ejemplo. Los límites se cargan a mano porque son reglas de cada prop firm: NinjaTrader y Tradovate no los informan.</p>
+        <p class="caption">Datos de ejemplo. Los límites se ingresan a mano porque son reglas de cada prop firm: NinjaTrader y Tradovate no los informan.</p>
       </div>
     </div>
   </section>
@@ -529,7 +529,7 @@ footer p{max-width:90ch}
         <p class="prose">El copiador también es tu monitor del día. Todo se actualiza en vivo, agrupado cada 250 ms para no cargar NinjaTrader aunque tengas muchas cuentas en mercado rápido.</p>
       </div>
       <dl class="cols">
-        <div><dt>Cuenta y Conexión</dt><dd>Qué cuentas participan y si están conectadas. Sacás las de simulación con Seleccionar cuentas.</dd></div>
+        <div><dt>Cuenta y Conexión</dt><dd>Qué cuentas participan y si están conectadas. Quitas las de simulación con Seleccionar cuentas.</dd></div>
         <div><dt>Mult. y Copia</dt><dd>El multiplicador de cada Slave y su estado: copiando o en pausa.</dd></div>
         <div><dt>Posición</dt><dd>La posición real de cada cuenta, con ⚠ si no coincide con la esperada.</dd></div>
         <div><dt>Balance neto</dt><dd>El balance de cada cuenta y el total sumado.</dd></div>
@@ -541,7 +541,7 @@ footer p{max-width:90ch}
       <div class="extras">
         <div><h3>Sigue corriendo en segundo plano</h3><p>Cerrar la ventana no detiene el copiador. Se detiene solo con "Detener copiador" o al cerrar NinjaTrader.</p></div>
         <div><h3>Estado siempre visible</h3><p>"COPIANDO desde 09:31 · 4 slaves" junto al botón, y también en el título de la ventana.</p></div>
-        <div><h3>Registro de cada copia</h3><p>Cada intento queda anotado con hora, sea exitoso o fallido. Lo copiás o lo limpiás con un botón.</p></div>
+        <div><h3>Registro de cada copia</h3><p>Cada intento queda anotado con hora, sea exitoso o fallido. Puedes copiarlo o limpiarlo con un botón.</p></div>
       </div>
     </div>
   </section>
@@ -550,20 +550,20 @@ footer p{max-width:90ch}
   <section id="compartir">
     <div class="wrap split">
       <div class="sec-head">
-        <h2>Mostrá tus resultados sin mostrar tus cuentas</h2>
-        <p class="prose"><strong>Modo privado</strong> oculta los números de cuenta (TDFYSL50122422930 pasa a TDFY***930) y los balances en todo el copiador: panel, registro, ventanas y la imagen que compartís. PnL, posiciones y distancias de riesgo siguen visibles. Probalo con el interruptor del panel de arriba.</p>
+        <h2>Muestra tus resultados sin mostrar tus cuentas</h2>
+        <p class="prose"><strong>Modo privado</strong> oculta los números de cuenta (TDFYSL50122422930 pasa a TDFY***930) y los balances en todo el copiador: panel, registro, ventanas y la imagen que compartes. PnL, posiciones y distancias de riesgo siguen visibles. Pruébalo con el interruptor del panel de arriba.</p>
         <p class="prose"><strong>Compartir resumen</strong> genera una imagen en alta resolución con el resultado del día, lista para pegar en WhatsApp, Discord o Telegram. Se copia al portapapeles y queda guardada en tu carpeta de reportes.</p>
       </div>
       <div class="card-stage">
         <div class="share" role="img" aria-label="Ejemplo de imagen de resumen del día con cuentas ocultas y PnL total de 478 dólares">
           <div class="share-head"><b>Prime Copy</b><span>Resumen · 25/09/2026</span></div>
           <div class="share-body">
-            <div class="share-row"><span>TDFY***930 <span class="muted">Master</span></span><span class="muted">****</span><span class="p">+$284,00</span></div>
-            <div class="share-row"><span>TDFY***815</span><span class="muted">****</span><span class="p">+$259,00</span></div>
-            <div class="share-row"><span>TDFY***207</span><span class="muted">****</span><span class="p">+$538,00</span></div>
-            <div class="share-row"><span>TDFY***562</span><span class="muted">****</span><span class="n">−$603,00</span></div>
-            <div class="share-row"><span>TDFY***031 <span class="muted">En pausa</span></span><span class="muted">****</span><span>$0,00</span></div>
-            <div class="share-total"><span>PnL del día</span><span class="p">+$478,00</span></div>
+            <div class="share-row"><span>TDFY***930 <span class="muted">Master</span></span><span class="muted">****</span><span class="p">+$284.00</span></div>
+            <div class="share-row"><span>TDFY***815</span><span class="muted">****</span><span class="p">+$259.00</span></div>
+            <div class="share-row"><span>TDFY***207</span><span class="muted">****</span><span class="p">+$538.00</span></div>
+            <div class="share-row"><span>TDFY***562</span><span class="muted">****</span><span class="n">−$603.00</span></div>
+            <div class="share-row"><span>TDFY***031 <span class="muted">En pausa</span></span><span class="muted">****</span><span>$0.00</span></div>
+            <div class="share-total"><span>PnL del día</span><span class="p">+$478.00</span></div>
           </div>
           <div class="share-foot"><span>By @mrbenito.fx</span><span>5 cuentas</span></div>
         </div>
@@ -576,13 +576,13 @@ footer p{max-width:90ch}
     <div class="wrap">
       <div class="sec-head">
         <h2>Se instala como cualquier add-on</h2>
-        <p class="prose">Un solo archivo ZIP que importás desde NinjaTrader. Tu configuración de cuentas, multiplicadores, riesgo e historial se conserva cuando actualizás a una versión nueva.</p>
+        <p class="prose">Un solo archivo ZIP que importas desde NinjaTrader. Tu configuración de cuentas, multiplicadores, riesgo e historial se conserva cuando actualizas a una versión nueva.</p>
       </div>
       <ol class="install">
-        <li><b>Importá el ZIP</b><p>En el Control Center: <span class="path">Tools &gt; Import &gt; NinjaScript Add-On</span>. No hace falta descomprimirlo.</p></li>
-        <li><b>Reiniciá NinjaTrader</b><p>Aceptá el mensaje de importación y volvé a abrir NinjaTrader.</p></li>
-        <li><b>Abrí el copiador</b><p>En el Control Center: <span class="path">New &gt; Trade Copier</span>.</p></li>
-        <li><b>Activá tu acceso</b><p>La primera vez te muestra tu email o ID. Tocá "Copiar email/ID", mandalo por chat y, cuando te confirmen, tocá "Reintentar".</p></li>
+        <li><b>Importa el ZIP</b><p>En el Control Center: <span class="path">Tools &gt; Import &gt; NinjaScript Add-On</span>. No hace falta descomprimirlo.</p></li>
+        <li><b>Reinicia NinjaTrader</b><p>Acepta el mensaje de importación y vuelve a abrir NinjaTrader.</p></li>
+        <li><b>Abre el copiador</b><p>En el Control Center: <span class="path">New &gt; Trade Copier</span>.</p></li>
+        <li><b>Activa tu acceso</b><p>La primera vez te muestra tu email o ID. Haz clic en "Copiar email/ID", envíalo por chat y, cuando te confirmen, haz clic en "Reintentar".</p></li>
       </ol>
     </div>
   </section>
@@ -597,8 +597,8 @@ footer p{max-width:90ch}
         <details><summary>¿Funciona con cuentas de distintos brokers?</summary><p>No por ahora. Todas las cuentas tienen que usar el mismo feed (Tradovate), porque el mapeo de instrumentos entre brokers no está soportado.</p></details>
         <details><summary>¿Puedo tener varios grupos de Master y Slaves?</summary><p>Por ahora hay un grupo Master → Slaves por instancia de NinjaTrader, con todas las Slaves que quieras.</p></details>
         <details><summary>¿Qué pasa si se corta internet?</summary><p>El acceso sigue funcionando hasta 72 horas desde la última validación. Las órdenes dependen de tu conexión con Tradovate como siempre.</p></details>
-        <details><summary>¿Qué pasa si una Slave queda desalineada?</summary><p>El panel la marca con ⚠ y te muestra la posición esperada y la real. Se vuelve a alinear con la próxima ejecución del Master en ese instrumento, o la podés pausar o cerrar a mano.</p></details>
-        <details><summary>¿Cuánto cuesta?</summary><p>Escribinos por Telegram y te pasamos los planes según cuántas cuentas manejes.</p></details>
+        <details><summary>¿Qué pasa si una Slave queda desalineada?</summary><p>El panel la marca con ⚠ y te muestra la posición esperada y la real. Se vuelve a alinear con la próxima ejecución del Master en ese instrumento, o puedes pausarla o cerrarla a mano.</p></details>
+        <details><summary>¿Cuánto cuesta?</summary><p>Escríbenos por Telegram y te enviamos los planes según cuántas cuentas manejes.</p></details>
       </div>
     </div>
   </section>
@@ -606,8 +606,8 @@ footer p{max-width:90ch}
   <!-- CIERRE -->
   <section id="contacto">
     <div class="wrap closing">
-      <h2>Escribinos y te damos acceso</h2>
-      <p class="lede">Contanos cuántas cuentas querés copiar y con qué prop firms operás. Te pasamos el instalador, los precios y te activamos el usuario.</p>
+      <h2>Escríbenos y te damos acceso</h2>
+      <p class="lede">Cuéntanos cuántas cuentas quieres copiar y con qué prop firms operas. Te enviamos el instalador, los precios y te activamos el usuario.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="https://t.me/mrbenitofx" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.4-.1-.6-.6-.2L6.4 13.1 1.7 11.6c-1-.3-1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.3Z"/></svg>
@@ -625,7 +625,7 @@ footer p{max-width:90ch}
 <footer>
   <div class="wrap">
     <p><b>Prime Copy</b> v0.1.0 · By @mrbenito.fx</p>
-    <p>Operar futuros implica riesgo de pérdida. Prime Copy replica las operaciones que vos hacés; no genera señales ni garantiza resultados. Revisá las reglas de tu prop firm sobre copiado de operaciones antes de usarlo. NinjaTrader y Tradovate son marcas de sus respectivos dueños; Prime Copy es un add-on independiente.</p>
+    <p>Operar futuros implica riesgo de pérdida. Prime Copy replica las operaciones que tú haces; no genera señales ni garantiza resultados. Revisa las reglas de tu prop firm sobre copiado de operaciones antes de usarlo. NinjaTrader y Tradovate son marcas de sus respectivos dueños; Prime Copy es un add-on independiente.</p>
   </div>
 </footer>
 
@@ -637,11 +637,11 @@ footer p{max-width:90ch}
   try { privateMode = localStorage.getItem("pc-private") === "1"; } catch(e){}
   function mask(id){ return privateMode ? id.slice(0,4) + "***" + id.slice(-3) : id; }
   function money(v, signed){
-    var s = Math.abs(v).toLocaleString("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2});
+    var s = Math.abs(v).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
     if (!signed) return "$" + s;
     return (v > 0 ? "+$" : v < 0 ? "−$" : "$") + s;
   }
-  function moneyRound(v){ return "$" + Math.round(v).toLocaleString("es-AR"); }
+  function moneyRound(v){ return "$" + Math.round(v).toLocaleString("en-US"); }
 
   /* ---- demo grid ---- */
   var POINT = 2; // MNQ: 2 USD por punto
@@ -665,7 +665,7 @@ footer p{max-width:90ch}
       return '<tr class="' + (a.master ? "master" : a.paused ? "paused" : "") + '" data-i="' + i + '">' +
         '<td class="acct"></td>' +
         '<td><span class="conn">Conectada</span></td>' +
-        '<td class="r">' + (a.master ? "—" : "x" + String(a.mult).replace(".", ",")) + '</td>' +
+        '<td class="r">' + (a.master ? "—" : "x" + String(a.mult)) + '</td>' +
         '<td>' + (a.master ? "—" : a.paused ? '<span class="pill off">En pausa</span>' : '<span class="pill on">Copiando</span>') + '</td>' +
         '<td class="pos"></td>' +
         '<td class="r bal"></td>' +
@@ -754,7 +754,7 @@ footer p{max-width:90ch}
   var sim = {master:5, mult:3, cap:10};
   var multOut = document.getElementById("mult-out"), capOut = document.getElementById("cap-out");
   var res = document.getElementById("sim-result"), why = document.getElementById("sim-why");
-  function fmt(x){ return String(x).replace(".", ","); }
+  function fmt(x){ return String(x); }
   function simRender(){
     var raw = sim.master * sim.mult;
     var target = Math.round(raw);
