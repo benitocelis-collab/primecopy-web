@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Prime Copy es un copiador de operaciones para NinjaTrader 8. Replica tu cuenta Master en todas tus cuentas Tradovate y de prop firms, con multiplicador, límites de riesgo y control por cuenta.">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101B23" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_AR">
+<meta property="og:title" content="Prime Copy · Trade copier para NinjaTrader 8">
+<meta property="og:description" content="Operá en una cuenta. Las demás te siguen. Copiador para cuentas Tradovate y de prop firms, con multiplicador, límites de riesgo y control por cuenta.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Crect x='2' y='2' width='15' height='15' rx='2' fill='%23D9531E'/%3E%3Crect x='11' y='11' width='15' height='15' rx='2' fill='none' stroke='%2316232D' stroke-width='2.4'/%3E%3C/svg%3E">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Prime Copy · Trade copier para NinjaTrader 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF;
+  --ink:#16232D;
+  --ink-2:#4A5A66;
+  --ink-3:#6B7A85;
+  --panel:#EEF1F3;
+  --panel-2:#F6F8F9;
+  --line:#D6DDE2;
+  --brand:#D9531E;
+  --brand-strong:#B9431A;
+  --on-brand:#FFFFFF;
+  --master:#FBF1EC;
+  --up:#1E8E3E;
+  --down:#C62828;
+  --warn:#B45F06;
+  --up-bg:#D7F0DD;
+  --up-ink:#1E6B30;
+  --flash:#FFF3C4;
+  --focus:#1B6FD1;
+  --shadow:0 18px 40px -18px rgba(22,35,45,.35);
+  --font:"Archivo", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#101B23; --ink:#E6ECF0; --ink-2:#B3C0C9; --ink-3:#8C9BA6;
+    --panel:#1A2731; --panel-2:#15212A; --line:#2B3B47;
+    --brand:#E8693A; --brand-strong:#E8693A; --on-brand:#1A0D06;
+    --master:#2A211C; --up:#4CC06C; --down:#F06A6A; --warn:#F2A33A;
+    --up-bg:#16382A; --up-ink:#7FDC98; --flash:#3A3418; --focus:#6FA8FF;
+    --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#101B23; --ink:#E6ECF0; --ink-2:#B3C0C9; --ink-3:#8C9BA6;
+  --panel:#1A2731; --panel-2:#15212A; --line:#2B3B47;
+  --brand:#E8693A; --brand-strong:#E8693A; --on-brand:#1A0D06;
+  --master:#2A211C; --up:#4CC06C; --down:#F06A6A; --warn:#F2A33A;
+  --up-bg:#16382A; --up-ink:#7FDC98; --flash:#3A3418; --focus:#6FA8FF;
+  --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:var(--font); font-size:17px; line-height:1.55;
+  padding-inline:clamp(16px,4vw,48px);
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:4px}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1140px;margin-inline:auto}
+
+/* ---------- type ---------- */
+h1,h2,h3{font-stretch:72%;font-weight:800;line-height:1;letter-spacing:-.005em;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.9rem,8.2vw,6.2rem);line-height:.92}
+h2{font-size:clamp(2rem,4.6vw,3.3rem)}
+h3{font-size:1.45rem;font-stretch:80%;font-weight:750;line-height:1.1}
+p{margin:0}
+.lede{font-size:clamp(1.08rem,1.6vw,1.25rem);color:var(--ink-2);max-width:60ch}
+.prose{max-width:62ch;color:var(--ink-2)}
+.prose strong{color:var(--ink);font-weight:650}
+
+/* ---------- header ---------- */
+.top{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+  background:color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  margin-inline:calc(-1 * clamp(16px,4vw,48px));
+  padding-inline:clamp(16px,4vw,48px);
+}
+.top .wrap{display:flex;align-items:center;gap:24px;min-height:64px}
+.mark{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;font-stretch:78%;font-size:1.35rem;letter-spacing:.01em}
+.mark svg{flex:none}
+.nav{display:flex;gap:22px;margin-left:auto;font-size:.95rem}
+.nav a{text-decoration:none;color:var(--ink-2)}
+.nav a:hover{color:var(--ink)}
+@media (max-width:860px){.nav{display:none}.top .btn{margin-left:auto}}
+
+.btn{
+  display:inline-flex;align-items:center;gap:10px;justify-content:center;
+  min-height:46px;padding:0 20px;border-radius:6px;
+  font:inherit;font-weight:650;font-size:1rem;text-decoration:none;cursor:pointer;
+  border:1.5px solid transparent;white-space:nowrap;
+}
+.btn svg{width:19px;height:19px;flex:none}
+.btn-primary{background:var(--brand-strong);color:var(--on-brand)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--ink-3)}
+.btn-sm{min-height:40px;padding:0 14px;font-size:.93rem}
+
+/* ---------- sections ---------- */
+main > section{padding-block:clamp(64px,9vw,120px);border-top:1px solid var(--line)}
+main > section.hero{border-top:0;padding-block:clamp(40px,6vw,72px) clamp(56px,8vw,96px)}
+.sec-head{display:grid;gap:18px;margin-bottom:clamp(32px,5vw,56px)}
+.split{display:grid;gap:clamp(32px,5vw,64px);grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}
+@media (max-width:900px){.split{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- hero ---------- */
+.hero-copy{display:grid;gap:24px;margin-bottom:clamp(36px,5vw,56px)}
+.hero h1 span{display:block}
+.hero h1 .second{color:var(--ink-3)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.fineprint{font-size:.9rem;color:var(--ink-3)}
+
+/* ---------- copier window replica ---------- */
+.win{
+  border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  background:var(--paper);box-shadow:var(--shadow);font-size:.9rem;
+}
+.win-title{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--panel);border-bottom:1px solid var(--line);font-size:.82rem;color:var(--ink-2)}
+.win-title b{font-weight:650;color:var(--ink)}
+.win-title .dots{display:flex;gap:6px;margin-left:auto}
+.win-title .dots i{width:10px;height:10px;border-radius:2px;background:var(--line);display:block}
+.win-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.status{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:4px;background:var(--up-bg);color:var(--up-ink);font-weight:700;font-size:.82rem;letter-spacing:.02em}
+.status .dot{width:8px;height:8px;border-radius:50%;background:currentColor}
+.fake-btn{display:inline-flex;align-items:center;padding:6px 10px;border-radius:4px;border:1px solid var(--line);font-size:.82rem;color:var(--ink-2);background:var(--panel-2)}
+.bar-spacer{flex:1}
+.switch{display:inline-flex;align-items:center;gap:9px;font:inherit;font-size:.85rem;color:var(--ink);background:none;border:0;cursor:pointer;padding:6px 2px;min-height:36px}
+.switch .track{width:34px;height:20px;border-radius:10px;background:var(--line);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--paper);transition:transform .2s}
+.switch[aria-pressed="true"] .track{background:var(--brand-strong)}
+.switch[aria-pressed="true"] .track::after{transform:translateX(14px)}
+
+.grid-scroll{overflow-x:auto}
+table.grid{width:100%;min-width:780px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.grid th{font-weight:600;font-size:.78rem;color:var(--ink-3);text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--panel-2);white-space:nowrap}
+.grid td{padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;transition:background-color .6s ease}
+.grid .r{text-align:right}
+.grid th.r{text-align:right}
+.grid tr.master td{background:var(--master)}
+.grid tr.master .acct::after{content:"Master";margin-left:8px;font-size:.72rem;font-weight:700;color:var(--brand-strong)}
+.grid tr.paused td{color:var(--ink-3)}
+.grid td.flash{background:var(--flash)}
+.grid tfoot td{font-weight:700;background:var(--panel-2);border-bottom:0}
+.acct{font-weight:600}
+.conn{display:inline-flex;align-items:center;gap:6px}
+.conn::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--up)}
+.pill{display:inline-block;padding:2px 8px;border-radius:3px;font-size:.78rem;font-weight:650}
+.pill.on{background:var(--up-bg);color:var(--up-ink)}
+.pill.off{background:var(--panel);color:var(--ink-2)}
+.up{color:var(--up)} .down{color:var(--down)} .warn{color:var(--warn)}
+.dist{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end}
+.meter{width:54px;height:6px;border-radius:3px;background:var(--panel);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:3px;background:currentColor}
+.win-log{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:10px 14px;background:var(--panel-2);font-size:.82rem;color:var(--ink-2);border-top:1px solid var(--line)}
+.win-log b{font-weight:650;color:var(--ink)}
+.win-log .replay{margin-left:auto;font:inherit;font-size:.82rem;color:var(--brand-strong);font-weight:650;background:none;border:0;cursor:pointer;padding:6px 0;min-height:32px;text-decoration:underline;text-underline-offset:3px}
+.caption{margin-top:12px;font-size:.85rem;color:var(--ink-3)}
+
+/* ---------- how it copies ---------- */
+.formula{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.3em .5em;
+  font-stretch:72%;font-weight:800;font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1.1;
+  padding:22px 0;border-block:2px solid var(--ink);margin-block:8px 28px;
+}
+.formula .op{color:var(--brand-strong)}
+.formula small{font-size:.5em;font-weight:500;font-stretch:100%;color:var(--ink-3);flex-basis:100%}
+table.steps{width:100%;min-width:560px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.steps caption{text-align:left;font-size:.9rem;color:var(--ink-3);padding-bottom:10px}
+.steps th,.steps td{padding:13px 12px;border-bottom:1px solid var(--line);text-align:left}
+.steps thead th{font-size:.8rem;color:var(--ink-3);font-weight:600}
+.steps tbody th{font-weight:650}
+.steps td.order{font-weight:700}
+.steps .n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);font-size:.78rem;margin-right:10px}
+.bullets{display:grid;gap:14px;margin:26px 0 0;padding:0;list-style:none;max-width:62ch;color:var(--ink-2)}
+.bullets li{padding-left:22px;position:relative}
+.bullets li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:2px;background:var(--brand)}
+.bullets strong{color:var(--ink);font-weight:650}
+
+/* ---------- control widget ---------- */
+.feature-list{display:grid;gap:28px}
+.feature-list > div{display:grid;gap:8px}
+.feature-list p{color:var(--ink-2);max-width:56ch}
+.sim{border:1px solid var(--line);border-radius:10px;background:var(--panel-2);padding:clamp(18px,3vw,28px);display:grid;gap:22px}
+.sim-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.sim-row label{font-weight:600}
+.sim-row .hint{display:block;font-weight:400;font-size:.85rem;color:var(--ink-3)}
+.stepper{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:6px;background:var(--paper);overflow:hidden}
+.stepper output{min-width:68px;display:grid;place-items:center;font-weight:700;font-variant-numeric:tabular-nums;font-size:1.05rem;padding-inline:8px}
+.stepper button{width:44px;min-height:44px;border:0;background:var(--panel);color:var(--ink);font:inherit;font-size:.9rem;cursor:pointer}
+.stepper button:hover{background:var(--line)}
+.stepper button:disabled{opacity:.4;cursor:not-allowed}
+.sim-master{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--paper)}
+.seg button{min-width:44px;min-height:44px;border:0;border-right:1px solid var(--line);background:none;color:var(--ink);font:inherit;font-weight:650;cursor:pointer;font-variant-numeric:tabular-nums}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sim-out{border-top:1px solid var(--line);padding-top:20px;display:grid;gap:6px}
+.sim-out .big{font-stretch:72%;font-weight:800;font-size:clamp(2rem,4vw,2.8rem);line-height:1;font-variant-numeric:tabular-nums}
+.sim-out .why{color:var(--ink-2);font-size:.95rem}
+.capped{color:var(--brand-strong)}
+
+/* ---------- risk ---------- */
+.dialog{border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow);overflow:hidden}
+.dialog .win-title{font-size:.82rem}
+.dialog-body{padding:18px;display:grid;gap:12px}
+.field{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px dashed var(--line);font-size:.95rem}
+.field:last-child{border-bottom:0;padding-bottom:0}
+.field span:last-child{font-weight:700;font-variant-numeric:tabular-nums}
+.field small{display:block;color:var(--ink-3);font-size:.8rem}
+.risk-rows{margin-top:22px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.risk-rows table{width:100%;min-width:460px;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:.9rem}
+.risk-rows th{font-size:.78rem;font-weight:600;color:var(--ink-3);text-align:left;padding:8px 12px;background:var(--panel-2);border-bottom:1px solid var(--line)}
+.risk-rows td{padding:10px 12px;border-bottom:1px solid var(--line)}
+.risk-rows tr:last-child td{border-bottom:0}
+.risk-rows .r{text-align:right}
+.desync{color:var(--down);font-weight:700}
+
+/* ---------- one view ---------- */
+.cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:0 36px;margin:0;border-top:2px solid var(--ink)}
+.cols div{padding:14px 0;border-bottom:1px solid var(--line);display:grid;gap:3px}
+.cols dt{font-weight:700;font-stretch:85%;font-size:1.05rem}
+.cols dd{margin:0;color:var(--ink-2);font-size:.95rem}
+.extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin-top:48px}
+.extras h3{margin-bottom:8px}
+.extras p{color:var(--ink-2)}
+
+/* ---------- share card ---------- */
+.card-stage{display:grid;place-items:center;background:var(--panel);border-radius:10px;padding:clamp(20px,4vw,40px)}
+.share{width:100%;max-width:380px;background:#FFFFFF;color:#16232D;border-radius:6px;overflow:hidden;box-shadow:0 20px 40px -20px rgba(0,0,0,.45);font-variant-numeric:tabular-nums}
+.share-head{background:#D9531E;color:#FFFFFF;padding:14px 18px;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.share-head b{font-stretch:75%;font-weight:800;font-size:1.3rem}
+.share-head span{font-size:.8rem}
+.share-body{padding:12px 18px 6px}
+.share-row{display:grid;grid-template-columns:1fr auto auto;gap:14px;padding:8px 0;border-bottom:1px solid #E6E9EC;font-size:.88rem}
+.share-row .muted{color:#6B7A85}
+.share-total{display:flex;justify-content:space-between;padding:12px 0 14px;font-weight:800;font-size:1rem}
+.share-foot{padding:9px 18px;background:#F6F6F6;font-size:.76rem;color:#6B7A85;display:flex;justify-content:space-between}
+.share .p{color:#1E8E3E;font-weight:700}
+.share .n{color:#C62828;font-weight:700}
+
+/* ---------- install ---------- */
+ol.install{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;border-top:2px solid var(--ink);counter-reset:step}
+ol.install li{counter-increment:step;padding:22px 24px 24px 0;display:grid;gap:10px;align-content:start}
+ol.install li::before{content:counter(step);font-stretch:72%;font-weight:800;font-size:2.6rem;line-height:1;color:var(--brand-strong);font-variant-numeric:tabular-nums}
+ol.install b{font-weight:700}
+ol.install p{color:var(--ink-2);font-size:.97rem}
+.path{font-weight:650;color:var(--ink);background:var(--panel);padding:1px 6px;border-radius:3px;white-space:nowrap}
+
+/* ---------- faq ---------- */
+.faq{max-width:780px;border-top:2px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;align-items:center;padding:18px 0;font-weight:650;font-size:1.08rem;min-height:44px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:1.5rem;font-weight:400;color:var(--ink-3);flex:none;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{padding:0 0 20px;color:var(--ink-2);max-width:66ch}
+
+/* ---------- closing ---------- */
+.closing{display:grid;gap:26px}
+.closing h2{font-size:clamp(2.4rem,6.4vw,4.8rem);line-height:.95;max-width:14ch}
+.contact-lines{display:flex;flex-wrap:wrap;gap:10px 28px;color:var(--ink-2);font-size:.95rem}
+.contact-lines b{color:var(--ink);font-weight:650}
+footer{border-top:1px solid var(--line);padding-block:28px 40px;font-size:.85rem;color:var(--ink-3)}
+footer .wrap{display:grid;gap:10px}
+footer p{max-width:90ch}
+
+@media (prefers-reduced-motion: reduce){
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#inicio" aria-label="Prime Copy, inicio">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="15" height="15" rx="2" fill="var(--brand)"/><rect x="11" y="11" width="15" height="15" rx="2" fill="none" stroke="var(--ink)" stroke-width="2.4"/></svg>
+      Prime Copy
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#como-copia">Cómo copia</a>
+      <a href="#control">Control</a>
+      <a href="#riesgo">Riesgo</a>
+      <a href="#instalacion">Instalación</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="https://t.me/mrbenitofx" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.4-.1-.6-.6-.2L6.4 13.1 1.7 11.6c-1-.3-1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.3Z"/></svg>
+      Telegram
+    </a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1><span>Operá en una cuenta.</span> <span class="second">Las demás te siguen.</span></h1>
+        <p class="lede">Prime Copy es un copiador de operaciones para NinjaTrader 8. Replica tu cuenta Master en todas tus cuentas Tradovate y de prop firms, con multiplicador, límites de riesgo y control por cuenta, desde un solo panel.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://t.me/mrbenitofx" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.4-.1-.6-.6-.2L6.4 13.1 1.7 11.6c-1-.3-1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.3Z"/></svg>
+            Pedir acceso por Telegram
+          </a>
+          <a class="btn btn-ghost" href="#como-copia">Ver cómo copia</a>
+        </div>
+      </div>
+
+      <div class="win" id="demo">
+        <div class="win-title">
+          <b>Prime Copy v0.1.0</b> <span>Trade Copier · By @mrbenito.fx</span>
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        </div>
+        <div class="win-bar">
+          <span class="status"><span class="dot" aria-hidden="true"></span>COPIANDO desde 09:31 · 4 slaves</span>
+          <span class="fake-btn">■ Detener copiador</span>
+          <span class="bar-spacer"></span>
+          <button class="switch" id="privacy" type="button" aria-pressed="false">
+            <span class="track" aria-hidden="true"></span>Modo privado
+          </button>
+        </div>
+        <div class="grid-scroll">
+          <table class="grid" aria-describedby="demo-caption">
+            <thead>
+              <tr>
+                <th scope="col">Cuenta</th>
+                <th scope="col">Conexión</th>
+                <th scope="col" class="r">Mult.</th>
+                <th scope="col">Copia</th>
+                <th scope="col">Posición</th>
+                <th scope="col" class="r">Balance neto</th>
+                <th scope="col" class="r">PnL día</th>
+                <th scope="col" class="r">Dist. diario</th>
+              </tr>
+            </thead>
+            <tbody id="grid-body"></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">Totales</td>
+                <td class="r" id="tot-bal"></td>
+                <td class="r" id="tot-pnl"></td>
+                <td class="r">0 desincronizadas</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div class="win-log" aria-live="polite">
+          <span>Registro:</span>
+          <span id="log"><b>09:42:07</b> Esperando la próxima ejecución del Master</span>
+          <button class="replay" id="replay" type="button">Ver la copia de nuevo</button>
+        </div>
+      </div>
+      <p class="caption" id="demo-caption">Datos de ejemplo. Es una réplica del panel real: el Master compra 2 MNQ y cada Slave se ajusta a su multiplicador. La cuenta en pausa no recibe la orden.</p>
+    </div>
+  </section>
+
+  <!-- COMO COPIA -->
+  <section id="como-copia">
+    <div class="wrap split">
+      <div class="sec-head">
+        <h2>Copia la posición, no cada orden suelta</h2>
+        <p class="prose">En cada ejecución real del Master, Prime Copy calcula qué posición le corresponde a cada Slave y envía <strong>solo la diferencia</strong> con lo que esa cuenta ya tiene o tiene en camino. Las órdenes salen a mercado.</p>
+        <ul class="bullets">
+          <li><strong>El redondeo no se acumula.</strong> Con multiplicadores como x0.5, cada fill se recalcula desde la posición objetivo.</li>
+          <li><strong>Una salida nunca te da vuelta.</strong> Si una Slave no tenía la entrada, la salida del Master no le abre una posición al revés.</li>
+          <li><strong>Si una orden se rechaza</strong> (margen, rechazo del broker), no frena al resto de las cuentas y se reintenta con la próxima ejecución del Master.</li>
+          <li><strong>Nunca copia operaciones anteriores</strong> al momento en que tocás Iniciar.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="formula" aria-label="Posición objetivo igual a posición del Master por multiplicador">
+          <span>Objetivo</span><span class="op">=</span><span>Master</span><span class="op">×</span><span>Mult.</span>
+          <small>Orden enviada = objetivo − lo que la Slave ya tiene</small>
+        </div>
+        <div class="grid-scroll">
+          <table class="steps">
+            <caption>Un trade completo en una Slave con multiplicador x2</caption>
+            <thead>
+              <tr><th scope="col">Momento</th><th scope="col">Master</th><th scope="col">Objetivo Slave</th><th scope="col">Orden a la Slave</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row"><span class="n">1</span>Entrada</th><td>Long 2</td><td>Long 4</td><td class="order up">Compra 4</td></tr>
+              <tr><th scope="row"><span class="n">2</span>Suma</th><td>Long 3</td><td>Long 6</td><td class="order up">Compra 2</td></tr>
+              <tr><th scope="row"><span class="n">3</span>Parcial</th><td>Long 1</td><td>Long 2</td><td class="order down">Vende 4</td></tr>
+              <tr><th scope="row"><span class="n">4</span>Salida</th><td>Flat</td><td>Flat</td><td class="order down">Vende 2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROL -->
+  <section id="control">
+    <div class="wrap split">
+      <div>
+        <div class="sec-head">
+          <h2>Cada cuenta con su propio tamaño</h2>
+          <p class="prose">No todas tus cuentas tienen el mismo balance ni las mismas reglas. Ajustá cuánto copia cada una sin tocar las demás.</p>
+        </div>
+        <div class="feature-list">
+          <div>
+            <h3>Multiplicador por cuenta</h3>
+            <p>De x0.5 a x10, en pasos de 0.5. Acepta coma o punto. Si un multiplicador no es válido, el copiador no arranca y el campo se marca en rojo.</p>
+          </div>
+          <div>
+            <h3>Máximo de contratos</h3>
+            <p>Un tope por instrumento para cada cuenta. La posición copiada nunca lo pasa, y una cuenta recortada por su tope no se marca como desincronizada.</p>
+          </div>
+          <div>
+            <h3>Pausar y reanudar</h3>
+            <p>Sacá una Slave del copiado sin detener al resto. Si tiene posición, elegís dejarla abierta o cerrarla. Al reanudar vuelve en la próxima entrada del Master, nunca a mitad de un trade.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim" aria-labelledby="sim-title">
+        <h3 id="sim-title">Probalo con una cuenta</h3>
+        <div class="sim-row">
+          <span><strong>Posición del Master</strong><span class="hint">Micros MNQ</span></span>
+          <div class="seg" role="group" aria-label="Posición del Master">
+            <button type="button" data-m="2">2</button>
+            <button type="button" data-m="3">3</button>
+            <button type="button" data-m="5" aria-pressed="true">5</button>
+          </div>
+        </div>
+        <div class="sim-row">
+          <label for="mult-out">Multiplicador<span class="hint">De a 0.5, hasta x10</span></label>
+          <div class="stepper">
+            <button type="button" id="mult-dn" aria-label="Bajar multiplicador">▼</button>
+            <output id="mult-out" aria-live="polite">x3</output>
+            <button type="button" id="mult-up" aria-label="Subir multiplicador">▲</button>
+          </div>
+        </div>
+        <div class="sim-row">
+          <label for="cap-out">Máximo de contratos<span class="hint">0 = sin límite</span></label>
+          <div class="stepper">
+            <button type="button" id="cap-dn" aria-label="Bajar máximo de contratos">▼</button>
+            <output id="cap-out" aria-live="polite">10</output>
+            <button type="button" id="cap-up" aria-label="Subir máximo de contratos">▲</button>
+          </div>
+        </div>
+        <div class="sim-out" aria-live="polite">
+          <span class="big" id="sim-result">Long 10</span>
+          <span class="why" id="sim-why"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIESGO -->
+  <section id="riesgo">
+    <div class="wrap split">
+      <div>
+        <div class="sec-head">
+          <h2>Las reglas de tu prop firm, siempre a la vista</h2>
+          <p class="prose">Cargás los límites de cada cuenta una vez y el panel te muestra cuánto margen te queda antes de romper una regla. El seguimiento corre desde que abrís NinjaTrader, aunque no abras la ventana.</p>
+        </div>
+        <ul class="bullets">
+          <li><strong>Límite de pérdida diaria</strong> con la distancia al límite en verde, naranja o rojo.</li>
+          <li><strong>Drawdown máximo trailing EOD.</strong> El umbral sube solo cuando un día cierra con balance récord, nunca por un máximo intradía. Snapshot automático a las 5pm ET / 4pm CT, y si NinjaTrader estaba cerrado lo recupera al reconectar.</li>
+          <li><strong>Meta de ganancia diaria.</strong> Cuando una Slave llega a su meta, el copiador le cierra la posición y la pausa sola. Pensado para las reglas de consistencia.</li>
+          <li><strong>Alerta de desincronización.</strong> Si la posición real de una Slave no coincide con la esperada, se marca en rojo con ⚠ y el detalle de lo esperado contra lo real.</li>
+          <li><strong>Cierre de emergencia.</strong> "Cerrar" aplana una sola cuenta. "CERRAR TODO" detiene el copiador y cierra Master y Slaves de una vez, sin que el cierre se vuelva a copiar.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="dialog">
+          <div class="win-title"><b>Riesgo</b> <span class="js-acct" data-id="TDFYSL50331207">TDFYSL50331207</span></div>
+          <div class="dialog-body">
+            <div class="field"><span>Límite de pérdida diaria</span><span>$2.000</span></div>
+            <div class="field"><span>Drawdown máximo<small>EOD trailing</small></span><span>$3.000</span></div>
+            <div class="field"><span>Meta de ganancia diaria<small>Cierra y pausa al llegar · 0 = sin meta</small></span><span>$1.500</span></div>
+            <div class="field"><span>Máximo de contratos<small>Por instrumento · 0 = sin límite</small></span><span>6</span></div>
+          </div>
+        </div>
+        <div class="risk-rows grid-scroll">
+          <table>
+            <thead><tr><th scope="col">Cuenta</th><th scope="col" class="r">Dist. diario</th><th scope="col" class="r">Dist. max DD</th><th scope="col">Estado</th></tr></thead>
+            <tbody>
+              <tr><td class="js-acct" data-id="TDFYSL50218815">TDFYSL50218815</td><td class="r up">$1.259</td><td class="r up">$2.410</td><td>Copiando</td></tr>
+              <tr><td class="js-acct" data-id="TDFYSL50447562">TDFYSL50447562</td><td class="r warn">$397</td><td class="r warn">$1.120</td><td>Copiando</td></tr>
+              <tr><td class="js-acct" data-id="TDFYSL50662140">TDFYSL50662140</td><td class="r down">$140</td><td class="r warn">$690</td><td><span class="desync">⚠ Esperado Long 2, real Long 1</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">Datos de ejemplo. Los límites se cargan a mano porque son reglas de cada prop firm: NinjaTrader y Tradovate no los informan.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNA VISTA -->
+  <section id="panel">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Todas tus cuentas en un solo panel</h2>
+        <p class="prose">El copiador también es tu monitor del día. Todo se actualiza en vivo, agrupado cada 250 ms para no cargar NinjaTrader aunque tengas muchas cuentas en mercado rápido.</p>
+      </div>
+      <dl class="cols">
+        <div><dt>Cuenta y Conexión</dt><dd>Qué cuentas participan y si están conectadas. Sacás las de simulación con Seleccionar cuentas.</dd></div>
+        <div><dt>Mult. y Copia</dt><dd>El multiplicador de cada Slave y su estado: copiando o en pausa.</dd></div>
+        <div><dt>Posición</dt><dd>La posición real de cada cuenta, con ⚠ si no coincide con la esperada.</dd></div>
+        <div><dt>Balance neto</dt><dd>El balance de cada cuenta y el total sumado.</dd></div>
+        <div><dt>PnL día y PnL abierto</dt><dd>Lo realizado en la sesión y lo que está corriendo, por cuenta y en total.</dd></div>
+        <div><dt>Dist. diario y Dist. max DD</dt><dd>Cuánto te falta para cada límite, en verde, naranja o rojo.</dd></div>
+        <div><dt>Movim.</dt><dd>Los trades cerrados de la cuenta con su resultado, con historial por fecha.</dd></div>
+        <div><dt>Cerrar</dt><dd>Aplana esa cuenta y cancela sus órdenes, sin tocar las demás.</dd></div>
+      </dl>
+      <div class="extras">
+        <div><h3>Sigue corriendo en segundo plano</h3><p>Cerrar la ventana no detiene el copiador. Se detiene solo con "Detener copiador" o al cerrar NinjaTrader.</p></div>
+        <div><h3>Estado siempre visible</h3><p>"COPIANDO desde 09:31 · 4 slaves" junto al botón, y también en el título de la ventana.</p></div>
+        <div><h3>Registro de cada copia</h3><p>Cada intento queda anotado con hora, sea exitoso o fallido. Lo copiás o lo limpiás con un botón.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARTIR -->
+  <section id="compartir">
+    <div class="wrap split">
+      <div class="sec-head">
+        <h2>Mostrá tus resultados sin mostrar tus cuentas</h2>
+        <p class="prose"><strong>Modo privado</strong> oculta los números de cuenta (TDFYSL50122422930 pasa a TDFY***930) y los balances en todo el copiador: panel, registro, ventanas y la imagen que compartís. PnL, posiciones y distancias de riesgo siguen visibles. Probalo con el interruptor del panel de arriba.</p>
+        <p class="prose"><strong>Compartir resumen</strong> genera una imagen en alta resolución con el resultado del día, lista para pegar en WhatsApp, Discord o Telegram. Se copia al portapapeles y queda guardada en tu carpeta de reportes.</p>
+      </div>
+      <div class="card-stage">
+        <div class="share" role="img" aria-label="Ejemplo de imagen de resumen del día con cuentas ocultas y PnL total de 478 dólares">
+          <div class="share-head"><b>Prime Copy</b><span>Resumen · 25/09/2026</span></div>
+          <div class="share-body">
+            <div class="share-row"><span>TDFY***930 <span class="muted">Master</span></span><span class="muted">****</span><span class="p">+$284,00</span></div>
+            <div class="share-row"><span>TDFY***815</span><span class="muted">****</span><span class="p">+$259,00</span></div>
+            <div class="share-row"><span>TDFY***207</span><span class="muted">****</span><span class="p">+$538,00</span></div>
+            <div class="share-row"><span>TDFY***562</span><span class="muted">****</span><span class="n">−$603,00</span></div>
+            <div class="share-row"><span>TDFY***031 <span class="muted">En pausa</span></span><span class="muted">****</span><span>$0,00</span></div>
+            <div class="share-total"><span>PnL del día</span><span class="p">+$478,00</span></div>
+          </div>
+          <div class="share-foot"><span>By @mrbenito.fx</span><span>5 cuentas</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALACION -->
+  <section id="instalacion">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Se instala como cualquier add-on</h2>
+        <p class="prose">Un solo archivo ZIP que importás desde NinjaTrader. Tu configuración de cuentas, multiplicadores, riesgo e historial se conserva cuando actualizás a una versión nueva.</p>
+      </div>
+      <ol class="install">
+        <li><b>Importá el ZIP</b><p>En el Control Center: <span class="path">Tools &gt; Import &gt; NinjaScript Add-On</span>. No hace falta descomprimirlo.</p></li>
+        <li><b>Reiniciá NinjaTrader</b><p>Aceptá el mensaje de importación y volvé a abrir NinjaTrader.</p></li>
+        <li><b>Abrí el copiador</b><p>En el Control Center: <span class="path">New &gt; Trade Copier</span>.</p></li>
+        <li><b>Activá tu acceso</b><p>La primera vez te muestra tu email o ID. Tocá "Copiar email/ID", mandalo por chat y, cuando te confirmen, tocá "Reintentar".</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="preguntas">
+    <div class="wrap">
+      <div class="sec-head"><h2>Preguntas frecuentes</h2></div>
+      <div class="faq">
+        <details><summary>¿Qué necesito para usarlo?</summary><p>NinjaTrader 8 actualizado con sesión iniciada, tus cuentas conectadas por Tradovate y conexión a internet al abrir NinjaTrader. Master y Slaves corren en la misma instancia de NinjaTrader.</p></details>
+        <details><summary>¿Copia stop loss y take profit?</summary><p>Todavía no. Copia entradas y salidas a mercado. Los brackets (SL/TP adjuntos como OCO) no se replican. Cuando el Master cierra, las Slaves cierran con él.</p></details>
+        <details><summary>¿Funciona con cuentas de distintos brokers?</summary><p>No por ahora. Todas las cuentas tienen que usar el mismo feed (Tradovate), porque el mapeo de instrumentos entre brokers no está soportado.</p></details>
+        <details><summary>¿Puedo tener varios grupos de Master y Slaves?</summary><p>Por ahora hay un grupo Master → Slaves por instancia de NinjaTrader, con todas las Slaves que quieras.</p></details>
+        <details><summary>¿Qué pasa si se corta internet?</summary><p>El acceso sigue funcionando hasta 72 horas desde la última validación. Las órdenes dependen de tu conexión con Tradovate como siempre.</p></details>
+        <details><summary>¿Qué pasa si una Slave queda desalineada?</summary><p>El panel la marca con ⚠ y te muestra la posición esperada y la real. Se vuelve a alinear con la próxima ejecución del Master en ese instrumento, o la podés pausar o cerrar a mano.</p></details>
+        <details><summary>¿Cuánto cuesta?</summary><p>Escribinos por Telegram y te pasamos los planes según cuántas cuentas manejes.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section id="contacto">
+    <div class="wrap closing">
+      <h2>Escribinos y te damos acceso</h2>
+      <p class="lede">Contanos cuántas cuentas querés copiar y con qué prop firms operás. Te pasamos el instalador, los precios y te activamos el usuario.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://t.me/mrbenitofx" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.8.8l-4.8-3.6-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.4-.1-.6-.6-.2L6.4 13.1 1.7 11.6c-1-.3-1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.3Z"/></svg>
+          Escribir por Telegram
+        </a>
+      </div>
+      <div class="contact-lines">
+        <span>Telegram: <b>t.me/mrbenitofx</b></span>
+        <span>Autor: <b>@mrbenito.fx</b></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Prime Copy</b> v0.1.0 · By @mrbenito.fx</p>
+    <p>Operar futuros implica riesgo de pérdida. Prime Copy replica las operaciones que vos hacés; no genera señales ni garantiza resultados. Revisá las reglas de tu prop firm sobre copiado de operaciones antes de usarlo. NinjaTrader y Tradovate son marcas de sus respectivos dueños; Prime Copy es un add-on independiente.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ---- helpers ---- */
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var privateMode = false;
+  try { privateMode = localStorage.getItem("pc-private") === "1"; } catch(e){}
+  function mask(id){ return privateMode ? id.slice(0,4) + "***" + id.slice(-3) : id; }
+  function money(v, signed){
+    var s = Math.abs(v).toLocaleString("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2});
+    if (!signed) return "$" + s;
+    return (v > 0 ? "+$" : v < 0 ? "−$" : "$") + s;
+  }
+  function moneyRound(v){ return "$" + Math.round(v).toLocaleString("es-AR"); }
+
+  /* ---- demo grid ---- */
+  var POINT = 2; // MNQ: 2 USD por punto
+  var accounts = [
+    {id:"TDFYSL50122422930", master:true, bal:51240.50, pnl0:210, limit:1000},
+    {id:"TDFYSL50218815", mult:1,   bal:50310.00,  pnl0:185,  limit:1000},
+    {id:"TDFYSL50331207", mult:2,   bal:101820.25, pnl0:390,  limit:2000},
+    {id:"TDFYSL50447562", mult:0.5, bal:49480.00,  pnl0:-640, limit:1000},
+    {id:"TDFYSL50559031", mult:1,   bal:50000.00,  pnl0:0,    limit:1000, paused:true}
+  ];
+  var state = {masterPos:0, synced:{}, points:0};
+  var body = document.getElementById("grid-body");
+
+  function posOf(a){
+    if (a.master) return state.masterPos;
+    if (a.paused || !state.synced[a.id]) return 0;
+    return Math.round(state.masterPos * a.mult);
+  }
+  function build(){
+    body.innerHTML = accounts.map(function(a, i){
+      return '<tr class="' + (a.master ? "master" : a.paused ? "paused" : "") + '" data-i="' + i + '">' +
+        '<td class="acct"></td>' +
+        '<td><span class="conn">Conectada</span></td>' +
+        '<td class="r">' + (a.master ? "—" : "x" + String(a.mult).replace(".", ",")) + '</td>' +
+        '<td>' + (a.master ? "—" : a.paused ? '<span class="pill off">En pausa</span>' : '<span class="pill on">Copiando</span>') + '</td>' +
+        '<td class="pos"></td>' +
+        '<td class="r bal"></td>' +
+        '<td class="r pnl"></td>' +
+        '<td class="r dist"></td>' +
+      '</tr>';
+    }).join("");
+  }
+  function render(){
+    var totBal = 0, totPnl = 0;
+    accounts.forEach(function(a, i){
+      var row = body.children[i];
+      var pos = posOf(a);
+      var pnl = a.pnl0 + pos * POINT * state.points;
+      var dist = a.limit + pnl, ratio = dist / a.limit;
+      var cls = ratio > .5 ? "up" : ratio > .25 ? "warn" : "down";
+      totBal += a.bal; totPnl += pnl;
+      row.querySelector(".acct").textContent = mask(a.id);
+      row.querySelector(".pos").textContent = pos ? "Long " + pos : "Flat";
+      row.querySelector(".bal").textContent = privateMode ? "****" : money(a.bal);
+      var p = row.querySelector(".pnl");
+      p.textContent = money(pnl, true);
+      p.className = "r pnl " + (pnl > 0 ? "up" : pnl < 0 ? "down" : "");
+      var d = row.querySelector(".dist");
+      d.innerHTML = '<span class="dist ' + cls + '">' + moneyRound(dist) +
+        '<span class="meter" aria-hidden="true"><i style="width:' + Math.min(100, Math.round(ratio * 50)) + '%"></i></span></span>';
+    });
+    document.getElementById("tot-bal").textContent = privateMode ? "****" : money(totBal);
+    var tp = document.getElementById("tot-pnl");
+    tp.textContent = money(totPnl, true);
+    tp.className = "r " + (totPnl > 0 ? "up" : totPnl < 0 ? "down" : "");
+    document.querySelectorAll(".js-acct").forEach(function(el){ el.textContent = mask(el.dataset.id); });
+  }
+  function flash(i, sel){
+    if (reduce) return;
+    var cell = body.children[i].querySelector(sel);
+    cell.classList.add("flash");
+    setTimeout(function(){ cell.classList.remove("flash"); }, 700);
+  }
+  var log = document.getElementById("log");
+  function setLog(t, msg){ log.innerHTML = "<b>" + t + "</b> " + msg; }
+
+  var timers = [];
+  function later(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function finalState(){
+    state.masterPos = 2; state.points = 18.5;
+    accounts.forEach(function(a){ if (!a.master && !a.paused) state.synced[a.id] = true; });
+    render();
+    setLog("09:42:07", "Master compra 2 MNQ · 3 slaves sincronizadas · 1 en pausa");
+  }
+  function play(){
+    timers.forEach(clearTimeout); timers = [];
+    state = {masterPos:0, synced:{}, points:0};
+    render();
+    setLog("09:42:06", "Esperando la próxima ejecución del Master");
+    if (reduce){ finalState(); return; }
+    later(700, function(){ state.masterPos = 2; render(); flash(0, ".pos"); setLog("09:42:07", "Master compra 2 MNQ"); });
+    var t = 1000;
+    accounts.forEach(function(a, i){
+      if (a.master || a.paused) return;
+      later(t, function(){ state.synced[a.id] = true; render(); flash(i, ".pos"); });
+      t += 140;
+    });
+    later(t + 60, function(){ setLog("09:42:07", "Master compra 2 MNQ · 3 slaves sincronizadas · 1 en pausa"); });
+    var path = [1.25,3,2.5,4.75,6.5,5.75,8.25,10,9.5,12.25,14,13.25,15.5,17.25,16.75,18.5];
+    path.forEach(function(p, k){
+      later(t + 400 + k * 170, function(){ state.points = p; render(); });
+    });
+  }
+  build();
+  finalState(); // estado completo en reposo (captura, lectura rápida)
+  later(900, play);
+  document.getElementById("replay").addEventListener("click", play);
+
+  var sw = document.getElementById("privacy");
+  sw.setAttribute("aria-pressed", String(privateMode));
+  sw.addEventListener("click", function(){
+    privateMode = !privateMode;
+    sw.setAttribute("aria-pressed", String(privateMode));
+    try { localStorage.setItem("pc-private", privateMode ? "1" : "0"); } catch(e){}
+    render();
+  });
+  render();
+
+  /* ---- simulador de control ---- */
+  var sim = {master:5, mult:3, cap:10};
+  var multOut = document.getElementById("mult-out"), capOut = document.getElementById("cap-out");
+  var res = document.getElementById("sim-result"), why = document.getElementById("sim-why");
+  function fmt(x){ return String(x).replace(".", ","); }
+  function simRender(){
+    var raw = sim.master * sim.mult;
+    var target = Math.round(raw);
+    var capped = sim.cap > 0 && target > sim.cap;
+    var final = capped ? sim.cap : target;
+    multOut.textContent = "x" + fmt(sim.mult);
+    capOut.textContent = sim.cap === 0 ? "0" : String(sim.cap);
+    res.textContent = "Long " + final;
+    res.classList.toggle("capped", capped);
+    why.textContent = capped
+      ? "Master " + sim.master + " × " + fmt(sim.mult) + " = " + fmt(raw) + ", recortado por el tope de " + sim.cap + ". No se marca como desincronizada."
+      : "Master " + sim.master + " × " + fmt(sim.mult) + " = " + fmt(raw) + (raw !== target ? ", redondeado a " + target : "") + (sim.cap === 0 ? ". Sin tope." : ". Debajo del tope de " + sim.cap + ".");
+    document.getElementById("mult-dn").disabled = sim.mult <= 0.5;
+    document.getElementById("mult-up").disabled = sim.mult >= 10;
+    document.getElementById("cap-dn").disabled = sim.cap <= 0;
+    document.getElementById("cap-up").disabled = sim.cap >= 50;
+  }
+  document.getElementById("mult-dn").onclick = function(){ sim.mult = Math.max(0.5, sim.mult - 0.5); simRender(); };
+  document.getElementById("mult-up").onclick = function(){ sim.mult = Math.min(10, sim.mult + 0.5); simRender(); };
+  document.getElementById("cap-dn").onclick = function(){ sim.cap = Math.max(0, sim.cap - 1); simRender(); };
+  document.getElementById("cap-up").onclick = function(){ sim.cap = Math.min(50, sim.cap + 1); simRender(); };
+  document.querySelectorAll(".seg button").forEach(function(b){
+    b.setAttribute("aria-pressed", String(+b.dataset.m === sim.master));
+    b.onclick = function(){
+      sim.master = +b.dataset.m;
+      document.querySelectorAll(".seg button").forEach(function(o){ o.setAttribute("aria-pressed", String(o === b)); });
+      simRender();
+    };
+  });
+  simRender();
+})();
+</script>
+</body>
+</html>
