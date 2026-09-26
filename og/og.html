@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=block">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+body{
+  background:#FFFFFF;color:#16232D;
+  font-family:"Archivo","Segoe UI",sans-serif;
+  font-variant-numeric:tabular-nums;
+  position:relative;
+}
+.top{position:absolute;left:64px;right:64px;top:52px;display:flex;align-items:center;gap:14px}
+.brand{font-weight:800;font-stretch:78%;font-size:34px;letter-spacing:.01em}
+.url{margin-left:auto;font-size:22px;color:#4A5A66;font-weight:500}
+h1{
+  position:absolute;left:60px;top:118px;margin:0;
+  font-weight:800;font-stretch:68%;font-size:104px;line-height:.92;letter-spacing:-.005em;
+}
+h1 span{display:block}
+h1 .second{color:#6B7A85}
+.sub{position:absolute;left:64px;top:312px;font-size:24px;color:#4A5A66}
+
+.win{
+  position:absolute;left:64px;right:64px;top:396px;height:300px;
+  border:1.5px solid #D6DDE2;border-radius:14px 14px 0 0;background:#FFFFFF;
+  box-shadow:0 24px 50px -20px rgba(22,35,45,.35);overflow:hidden;font-size:19px;
+}
+.bar{display:flex;align-items:center;gap:16px;padding:14px 20px;background:#EEF1F3;border-bottom:1.5px solid #D6DDE2}
+.status{display:inline-flex;align-items:center;gap:10px;padding:7px 12px;border-radius:5px;background:#D7F0DD;color:#1E6B30;font-weight:700;font-size:17px;letter-spacing:.02em}
+.status i{width:10px;height:10px;border-radius:50%;background:currentColor}
+.bar .priv{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:17px;color:#16232D}
+.track{width:38px;height:22px;border-radius:11px;background:#B9431A;position:relative}
+.track::after{content:"";position:absolute;top:3px;left:19px;width:16px;height:16px;border-radius:50%;background:#FFF}
+table{width:100%;border-collapse:collapse}
+th{font-size:15px;font-weight:600;color:#6B7A85;text-align:left;padding:9px 20px;background:#F6F8F9;border-bottom:1.5px solid #D6DDE2}
+td{padding:11px 20px;border-bottom:1.5px solid #E6E9EC;white-space:nowrap}
+.r{text-align:right}
+tr.master td{background:#FBF1EC}
+.acct{font-weight:650}
+.tag{font-size:14px;font-weight:700;color:#B9431A;margin-left:10px}
+.pill{display:inline-block;padding:3px 10px;border-radius:4px;font-size:15px;font-weight:650;background:#D7F0DD;color:#1E6B30}
+.up{color:#1E8E3E;font-weight:700}
+.down{color:#C62828;font-weight:700}
+</style>
+</head>
+<body>
+  <div class="top">
+    <svg width="40" height="40" viewBox="0 0 28 28" aria-hidden="true"><rect x="2" y="2" width="15" height="15" rx="2" fill="#D9531E"/><rect x="11" y="11" width="15" height="15" rx="2" fill="none" stroke="#16232D" stroke-width="2.4"/></svg>
+    <span class="brand">Prime Copy</span>
+    <span class="url">primecopy.netlify.app</span>
+  </div>
+
+  <h1><span>Operá en una cuenta.</span><span class="second">Las demás te siguen.</span></h1>
+  <p class="sub">Trade copier para NinjaTrader 8 · cuentas Tradovate y prop firms</p>
+
+  <div class="win">
+    <div class="bar">
+      <span class="status"><i></i>COPIANDO desde 09:31 · 4 slaves</span>
+      <span class="priv"><span class="track"></span>Modo privado</span>
+    </div>
+    <table>
+      <thead><tr><th>Cuenta</th><th class="r">Mult.</th><th>Copia</th><th>Posición</th><th class="r">Balance neto</th><th class="r">PnL día</th></tr></thead>
+      <tbody>
+        <tr class="master"><td class="acct">TDFY***930<span class="tag">Master</span></td><td class="r">—</td><td>—</td><td>Long 2</td><td class="r">****</td><td class="r up">+$284,00</td></tr>
+        <tr><td class="acct">TDFY***815</td><td class="r">x1</td><td><span class="pill">Copiando</span></td><td>Long 2</td><td class="r">****</td><td class="r up">+$259,00</td></tr>
+        <tr><td class="acct">TDFY***207</td><td class="r">x2</td><td><span class="pill">Copiando</span></td><td>Long 4</td><td class="r">****</td><td class="r up">+$538,00</td></tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
