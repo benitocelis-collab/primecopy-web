@@ -15,3 +15,7 @@ link. Su diseño está en `og/og.html`. Para regenerarla después de editarlo (P
 ```powershell
 & "${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 --virtual-time-budget=6000 "--user-data-dir=$env:TEMP\pc-og-profile" "--screenshot=$PWD\og-image.png" "file:///$($PWD -replace '\','/')/og/og.html"
 ```
+
+Al cambiar la imagen, sube también el `?v=N` de `og:image` y `twitter:image` en `index.html`:
+Telegram, WhatsApp y X guardan la imagen por URL y si no cambia siguen mostrando la vieja.
+Después refresca la vista previa en Telegram enviándole el link a @WebpageBot.
