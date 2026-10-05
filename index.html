@@ -39,6 +39,7 @@ img{max-width:100%}
   --line:#D6DDE2;
   --brand:#D9531E;
   --brand-strong:#B9431A;
+  --prime-tick:#A47600;
   --on-brand:#FFFFFF;
   --master:#FBF1EC;
   --up:#1E8E3E;
@@ -56,7 +57,7 @@ img{max-width:100%}
     color-scheme:dark;
     --paper:#101B23; --ink:#E6ECF0; --ink-2:#B3C0C9; --ink-3:#8C9BA6;
     --panel:#1A2731; --panel-2:#15212A; --line:#2B3B47;
-    --brand:#E8693A; --brand-strong:#E8693A; --on-brand:#1A0D06;
+    --brand:#E8693A; --brand-strong:#E8693A; --on-brand:#1A0D06; --prime-tick:#F2B705; --prime-tick:#F2B705;
     --master:#2A211C; --up:#4CC06C; --down:#F06A6A; --warn:#F2A33A;
     --up-bg:#16382A; --up-ink:#7FDC98; --flash:#3A3418; --focus:#6FA8FF;
     --shadow:0 18px 40px -18px rgba(0,0,0,.7);
@@ -294,6 +295,8 @@ ol.install p{color:var(--ink-2);font-size:.97rem}
 footer{border-top:1px solid var(--line);padding-block:28px 40px;font-size:.85rem;color:var(--ink-3)}
 footer .wrap{display:grid;gap:10px}
 footer p{max-width:90ch}
+.firma-prime{display:flex;align-items:center;gap:8px;font-family:ui-monospace,Consolas,monospace;font-size:.8rem}
+.firma-prime .tick{color:var(--prime-tick)}
 
 @media (prefers-reduced-motion: reduce){
   *{transition:none!important}
@@ -625,6 +628,7 @@ footer p{max-width:90ch}
 <footer>
   <div class="wrap">
     <p><b>Prime Copy</b> v0.1.0 · By @mrbenito.fx</p>
+    <p class="firma-prime"><svg viewBox="0 0 64 64" width="18" height="18" aria-hidden="true"><circle cx="32" cy="32" r="28.5" fill="none" stroke="currentColor" stroke-width="4"/><g transform="translate(13.5 13) scale(.6)"><path fill="currentColor" fill-rule="evenodd" d="M14 10H34A15 15 0 0 1 34 40H24V54H14ZM24 19H33A6 6 0 0 1 33 31H24Z"/><path fill="var(--prime-tick)" d="M53 4H62L56 21H48.5Z"/></g></svg><span>un producto de prime<span class="tick">′</span> software</span></p>
     <p>Operar futuros implica riesgo de pérdida. Prime Copy replica las operaciones que tú haces; no genera señales ni garantiza resultados. Revisa las reglas de tu prop firm sobre copiado de operaciones antes de usarlo. NinjaTrader y Tradovate son marcas de sus respectivos dueños; Prime Copy es un add-on independiente.</p>
   </div>
 </footer>
